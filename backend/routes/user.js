@@ -1,6 +1,6 @@
 // backend/routes/user.js
 const express = require('express');
-const { User } = require('../db/db');
+const { User, Account } = require('../db/db');
 const jwt = require('jsonwebtoken');
 const {JWT_SECRET} = require('../config');
 const singupZodValidator = require('../middleware/signup');
@@ -11,11 +11,11 @@ const updateZodValidator = require('../middleware/update');
 const router = express.Router();
 
 // user has 2 routes singup, singin
-
+// GET using filter
 router.get("/bulk", authMiddleware, async (req, res) => {
     const filter = req.query.filter;
 
-    console.log(filter);
+    // console.log(filter);
 
     try{
             const users = await User.find({
@@ -48,7 +48,7 @@ router.get("/bulk", authMiddleware, async (req, res) => {
     
 });
 
-
+// SingUp logic
 router.post("/signup", singupZodValidator,  async (req, res) => {
     // singup logic
 
@@ -73,6 +73,17 @@ router.post("/signup", singupZodValidator,  async (req, res) => {
 
         console.log("user added to database");
 
+        // once user is added assign a random balance
+        const userBalance = Math.floor(Math.random() * (10000) + 1);
+        // console.log(`Random balance: ${userBalance}`);
+        const accountUser = new Account({
+            userId : user._id,
+            balance : userBalance,
+        });
+
+        await accountUser.save();
+        console.log(`Balance added to your account`);
+
         const userId = user._id;
         console.log("Generating token");
         // create a token using jwt
@@ -96,6 +107,7 @@ router.post("/signup", singupZodValidator,  async (req, res) => {
     
 });
 
+// signin logic
 router.post("/signin", singinZodValidator, async (req, res) => {
     try{
         console.log("inside signin function");
@@ -132,7 +144,7 @@ router.post("/signin", singinZodValidator, async (req, res) => {
     }
 });
 
-
+// update user profile logic
 router.put("/", authMiddleware, updateZodValidator ,async(req, res) => {
     try {
         console.log('inside user put function')
