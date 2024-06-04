@@ -12,7 +12,39 @@ const router = express.Router();
 
 // user has 2 routes singup, singin
 
-router.get("/bulk", authMiddleware, (req, res) => {
+router.get("/bulk", authMiddleware, async (req, res) => {
+    const filter = req.query.filter;
+
+    console.log(filter);
+
+    try{
+            const users = await User.find({
+                $or : [{
+                    firstName : {
+                        "$regex" : filter
+                    }
+                }, {
+                    lastName : {
+                        "$regex" : filter
+                    }
+                }]
+            });
+
+            return res.status(200).json({
+                message : "user founds",
+                user : users.map( (user) => ({
+                    username : user.username,
+                    firstName : user.firstName,
+                    lastName : user.lastName,
+                    _id : user._id
+                })),
+            });
+
+    } catch (error) {
+        return res.status(400).json({
+            message : error
+        });
+    }
     
 });
 
