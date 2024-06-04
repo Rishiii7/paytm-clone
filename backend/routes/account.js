@@ -72,13 +72,17 @@ router.post("/transfer", authMiddleware, async (req, res) => {
         await Account.updateOne( {
             userId: toAccount
         }, {
-            balance : toUserAccount.balance + amount
+            $inc : {
+                balance : amount
+            }
         });
 
         await Account.updateOne( {
             userId : fromAccount
         }, {
-            balance : fromUserAccount.balance - amount
+            $inc : {
+                balance : -amount
+            }
         });
 
 
