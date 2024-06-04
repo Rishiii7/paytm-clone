@@ -27,6 +27,7 @@ async function authMiddleware(req, res, next) {
                 message : "Invalid authorization"
             });
         }
+        
         req.userId = decode.userId;
         console.log("validated successfully");
         next();
