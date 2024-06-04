@@ -34,4 +34,63 @@ router.get("/balance", authMiddleware, async (req, res) => {
 
 });
 
+
+router.post("/transfer", authMiddleware, async (req, res) => {
+    try {
+        const fromAccount = req.userId;
+        const {toAccount, amount} = req.body;
+
+        console.log(`from account : ${fromAccount}`);
+        console.log(`to account : ${toAccount} balance : ${typeof amount}`);
+
+
+        // check if toAccount & fromAccount is present
+        const toUserAccount = await Account.findOne({
+            userId : toAccount
+        });
+        const fromUserAccount = await Account.findOne({
+            userId : fromAccount
+        });
+
+        console.log(toUserAccount);
+        console.log(fromUserAccount);
+
+        if( !toUserAccount) {
+            return res.status(404).json({
+                message : "Invalid account to transfer money"
+            });
+        }
+
+        if(fromUserAccount.balance < amount) {
+            return res.status(400).json({
+                message : "Insufficient balance"
+            });
+        }
+
+        console.log(`successfully found both account`);
+
+        await Account.updateOne( {
+            userId: toAccount
+        }, {
+            balance : toUserAccount.balance + amount
+        });
+
+        await Account.updateOne( {
+            userId : fromAccount
+        }, {
+            balance : fromUserAccount.balance - amount
+        });
+
+
+        return res.status(200).json({
+            message : "Amount transfered successfully"
+        });
+
+    } catch (error) {
+        return res.status(400).json({
+            message : error
+        });
+    }
+});
+
 module.exports = router;
