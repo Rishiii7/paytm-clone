@@ -6,9 +6,9 @@ export const Appbar = () => {
                     <span className=" font-bold text-2xl">
                         Payments Apps
                     </span>
-                    <div className="flex gap-3">
-                        Hello, User
-                        <div className="px-1 bg-black rounded-full text-white h-6 text-center">
+                    <div className="flex items-center gap-3 ">
+                        <span>Hello, User</span>
+                        <div className="flex items-center justify-center px-1.5 bg-black rounded-full text-white h-8 w-8 text-center">
                             U
                         </div>
                     </div>

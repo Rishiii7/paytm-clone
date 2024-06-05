@@ -5,7 +5,7 @@ export const Balance = ({amount}) => {
                 <span>
                     Your Balance
                 </span>  
-                <span className="px-5">
+                <span className="px-3">
                     ${amount} 
                 </span>  
             </div>

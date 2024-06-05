@@ -1,41 +1,36 @@
 import { Button } from "./Button";
-import { InputBox } from "./InputBox";
-
 
 const USERS = ["User 1", "User 2", "User 3"];
 
-
-export const Users = () =>{
+export const Users = () => {
     return (
-        <>
-            <div className="p-3">
-                <div className="w-full">
-                    <span className=" font-bold ">Users</span>
-                    <InputBox label={""} type={"text"} placeholder={"Search users..."} />
+        <div className="pt-6 h-screen">
+            <div className="">
+                <span className="text-2xl font-bold">Users</span>
+                <div className="pt-3">
+                    <input 
+                        className="w-full rounded-lg p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        placeholder="Search users..."
+                    />
                 </div>
-                <div>
-                    {USERS.map( (user) => {
-                        return (
-                            <>
-                                <div className="bg-blend">
-                                    <div className="flex justify-between  px-2">
-                                        <div className="pt-8 font-semibold">
-                                            {user}
-                                        </div>
-                                        <div className="">
-                                            <Button label={"Send Money"} />
-                                        </div>
-
-                                    </div>
-                                    <hr></hr>
-                                </div>
-                                
-                            </>
-                        )
-                    })}
-                </div>
-
             </div>
-        </>
+            <div className="mt-6 space-y-4">
+                {USERS.map((user) => {
+                    return (
+                        <div className="bg-white px-4 rounded-lg shadow-md">
+                            <div className="flex justify-between items-center">
+                                <div className="text-lg font-semibold">
+                                    {user}
+                                </div>
+                                <div className="">
+                                    <Button label={"Send Money"} />
+                                </div>
+                            </div>
+                            {/* <hr className="mt-2" /> */}
+                        </div>
+                    )
+                })}
+            </div>
+        </div>
     )
 }
