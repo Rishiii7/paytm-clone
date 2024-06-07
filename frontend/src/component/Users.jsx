@@ -1,8 +1,15 @@
+import { useRecoilValue } from "recoil";
 import { Button } from "./Button";
+import { usersAtom } from "../atoms/Dashboard";
+import { useNavigate } from "react-router-dom";
 
-const USERS = ["User 1", "User 2", "User 3"];
+// const USERS = ["User 1", "User 2", "User 3"];
 
 export const Users = () => {
+    const USERS = useRecoilValue(usersAtom);
+    console.log(USERS);
+    const navigate = useNavigate();
+
     return (
         <div className="pt-6 h-screen">
             <div className="">
@@ -15,15 +22,17 @@ export const Users = () => {
                 </div>
             </div>
             <div className="mt-6 space-y-4">
-                {USERS.map((user) => {
+                {USERS.map((user, ind) => {
                     return (
-                        <div className="bg-white px-4 rounded-lg shadow-md">
+                        <div key={ind} className="bg-white px-4 rounded-lg shadow-md">
                             <div className="flex justify-between items-center">
                                 <div className="text-lg font-semibold">
-                                    {user}
+                                    {user.firstName}
                                 </div>
                                 <div className="">
-                                    <Button label={"Send Money"} />
+                                    <Button label={"Send Money"} onClick={ (e) => {
+                                        navigate(`/send?id=${user._id}&name=${user.firstName}`);
+                                    }}/>
                                 </div>
                             </div>
                             {/* <hr className="mt-2" /> */}
