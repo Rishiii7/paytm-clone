@@ -23,6 +23,7 @@ router.get("/balance", authMiddleware, async (req, res) => {
         console.log(`retrieved the balance`);
         return res.status(200).json({
             message : "Balance",
+            userId : balance.userId,
             balance : balance.balance,
         });
 

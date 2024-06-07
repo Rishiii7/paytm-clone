@@ -10,7 +10,34 @@ const updateZodValidator = require('../middleware/update');
 
 const router = express.Router();
 
-// user has 2 routes singup, singin
+// endpoint to get user information
+router.get('/userId/:userId', async (req, res) => {
+    
+    try {
+        const userId = req.params.userId;
+        const user = await User.findById(userId);
+
+        if(!user) {
+            return res.status(404).json({
+                message : `User not found`
+            });
+        }
+
+        console.log(`user found ~~ ${user}`);
+        return res.status(200).json({
+            user : user
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({
+            message : `Server error : ${error}`
+        });
+    }
+});
+
+
+
 // GET using filter
 router.get("/bulk", authMiddleware, async (req, res) => {
     const filter = req.query.filter;
